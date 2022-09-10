@@ -3,7 +3,8 @@ import { getRefs } from './js/getRefs';
 import { galleryMarkup } from './js/galleryMarkup';
 import { Notify } from 'notiflix';
 import { Loading } from 'notiflix';
-import { Block } from 'notiflix';
+import SimpleLightbox from 'simplelightbox';
+import 'simplelightbox/dist/simple-lightbox.min.css';
 //////////////////////////////////////////////////////////////////
 const refs = getRefs();
 const galleryApiService = new GalleryApiService();
@@ -20,7 +21,7 @@ function onFormSearch(evt) {
   }
 
   galleryApiService.resetPage();
-  Loading.dots();
+  Loading.dots('Loading');
   galleryApiService.fetchGallery().then(res => {
     if (res.hits.length === 0) {
       return Notify.warning(
@@ -32,6 +33,11 @@ function onFormSearch(evt) {
 
     galleryMarkup(res.hits);
     Loading.remove(1000);
+    if (res.totalHits <= 40) {
+      return Notify.failure(
+        "We're sorry, but you've reached the end of search results."
+      );
+    }
     refs.loadMoreBtn.classList.remove('is-hidden');
   });
   // const inputValue = evt.target.elements.searchQuery.value.trim();
@@ -52,9 +58,23 @@ function onFormSearch(evt) {
 }
 
 function onLoadMore() {
-  Loading.dots();
+  Loading.dots('Loading');
   galleryApiService.fetchGallery().then(res => {
     galleryMarkup(res.hits);
+    const { height: cardHeight } = document
+      .querySelector('.gallery')
+      .firstElementChild.getBoundingClientRect();
+
+    window.scrollBy({
+      top: cardHeight * 2.5,
+      behavior: 'smooth',
+    });
+    if (res.totalHits - 40 * (galleryApiService.page - 1) < 0) {
+      refs.loadMoreBtn.classList.add('is-hidden');
+      Notify.failure(
+        "We're sorry, but you've reached the end of search results."
+      );
+    }
   });
   Loading.remove(2000);
 }
@@ -73,13 +93,4 @@ function clearGalleryContainer() {
 //     });
 //     Loading.remove(1000);
 //   }
-// });
-
-// const { height: cardHeight } = document
-//   .querySelector('.gallery')
-//   .firstElementChild.getBoundingClientRect();
-
-// window.scrollBy({
-//   top: cardHeight * 2,
-//   behavior: 'smooth',
 // });

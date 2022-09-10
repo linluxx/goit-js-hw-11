@@ -44,4 +44,5 @@ export function galleryMarkup(data) {
     overlayOpacity: 0.8,
     animationSpeed: 300,
   });
+  lightbox.refresh();
 }

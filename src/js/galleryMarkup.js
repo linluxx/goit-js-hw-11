@@ -41,8 +41,9 @@ export function galleryMarkup(data) {
     .join('');
   refs.galleryList.insertAdjacentHTML('beforeend', markUp);
   let lightbox = new SimpleLightbox('.gallery a', {
-    overlayOpacity: 0.8,
-    animationSpeed: 300,
+    spinner: true,
+    captionsData: 'alt',
+    captionDelay: 250,
   });
   lightbox.refresh();
 }

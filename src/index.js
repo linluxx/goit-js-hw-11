@@ -3,6 +3,7 @@ import { getRefs } from './js/getRefs';
 import { galleryMarkup } from './js/galleryMarkup';
 import { Notify } from 'notiflix';
 import { Loading } from 'notiflix';
+import { Report } from 'notiflix';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 //////////////////////////////////////////////////////////////////
@@ -21,16 +22,19 @@ function onFormSearch(evt) {
   }
 
   galleryApiService.resetPage();
-  Loading.dots('Loading');
+  Loading.dots('Loading', { svgColor: 'rgb(185, 117, 27)' });
+
   galleryApiService.fetchGallery().then(res => {
     if (res.hits.length === 0) {
-      return Notify.warning(
+      Loading.remove(1000);
+      return Report.warning(
+        'Oops!',
         'Sorry, there are no images matching your search query. Please try again.'
       );
     }
     clearGalleryContainer();
     Notify.success(`Hooray! We found ${res.totalHits} images.`);
-
+    window.scrollBy(0, 0);
     galleryMarkup(res.hits);
     Loading.remove(1000);
     if (res.totalHits <= 40) {
@@ -58,7 +62,7 @@ function onFormSearch(evt) {
 }
 
 function onLoadMore() {
-  Loading.dots('Loading');
+  Loading.dots('Loading', { svgColor: 'rgb(185, 117, 27)' });
   galleryApiService.fetchGallery().then(res => {
     galleryMarkup(res.hits);
     const { height: cardHeight } = document
@@ -69,7 +73,7 @@ function onLoadMore() {
       top: cardHeight * 2.5,
       behavior: 'smooth',
     });
-    if (res.totalHits - 40 * (galleryApiService.page - 1) < 0) {
+    if (res.totalHits - 40 * (galleryApiService.page - 1) <= 0) {
       refs.loadMoreBtn.classList.add('is-hidden');
       Notify.failure(
         "We're sorry, but you've reached the end of search results."

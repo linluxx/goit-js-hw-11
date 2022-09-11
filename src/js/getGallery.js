@@ -25,6 +25,7 @@ export class GalleryApiService {
     this.page = 1;
   }
   async fetchGallery() {
+    console.log(this);
     try {
       const response = await axios
         .get(
@@ -42,6 +43,7 @@ export class GalleryApiService {
 
   incrementPage() {
     this.page += 1;
+    console.log(this);
   }
 
   resetPage() {

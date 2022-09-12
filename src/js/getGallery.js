@@ -4,20 +4,6 @@ const KEY = 'key=29800147-042a8c86586ab835e1f8a2965';
 const URL = 'https://pixabay.com/api/';
 const SEARCH_PARAMS =
   'image_type=photo&orientation=horizontal&safesearch=true&per_page=40';
-// export function getGallery(data) {
-//   return axios.get(`${URL}?${KEY}&q=${data}&${SEARCH_PARAMS}`);
-// }
-// export async function getGallery(data) {
-//   try {
-//     const response = await axios.get(
-//       `${URL}?${KEY}&q=${data}&${SEARCH_PARAMS}`
-//     );
-//     console.log(response);
-//     return response;
-//   } catch (error) {
-//     console.error(error);
-//   }
-// }
 
 export class GalleryApiService {
   constructor() {
@@ -25,7 +11,6 @@ export class GalleryApiService {
     this.page = 1;
   }
   async fetchGallery() {
-    console.log(this);
     try {
       const response = await axios
         .get(
@@ -43,7 +28,6 @@ export class GalleryApiService {
 
   incrementPage() {
     this.page += 1;
-    console.log(this);
   }
 
   resetPage() {

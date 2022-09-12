@@ -4,7 +4,6 @@ import 'simplelightbox/dist/simple-lightbox.min.css';
 const refs = getRefs();
 
 export function galleryMarkup(data) {
-  console.log(data);
   const markUp = data
     .map(
       ({
@@ -41,7 +40,6 @@ export function galleryMarkup(data) {
     .join('');
   refs.galleryList.insertAdjacentHTML('beforeend', markUp);
   let lightbox = new SimpleLightbox('.gallery a', {
-    spinner: true,
     captionsData: 'alt',
     captionDelay: 250,
   });

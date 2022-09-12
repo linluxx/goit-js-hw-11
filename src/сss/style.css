@@ -55,6 +55,7 @@ img {
   display: flex;
   flex-direction: column;
   align-items: center;
+  font-style: italic;
 }
 
 .gallery {
@@ -73,12 +74,13 @@ img {
   box-shadow: 0.1rem 0.4rem 0.4rem rgba(0, 0, 0, 0.4);
   overflow: hidden;
   border-radius: 10px;
-  transition: box-shadow 250ms linear;
+  transition: box-shadow 300ms linear, transform 300ms ease-out;
   background-color: #fff;
 }
 
 .photo-card:hover {
   box-shadow: 0.1rem 0.4rem 0.4rem rgb(185, 117, 27);
+  transform: scale(1.1);
 }
 
 .load-more {
@@ -92,15 +94,16 @@ img {
 
 .load-more {
   border-color: transparent;
-  background-color: #fff;
+  background-color: rgba(255, 255, 255, 0.699);
   border-radius: 15px 15px 15px 15px;
   box-shadow: 0.1rem 0.4rem 0.4rem rgba(0, 0, 0, 0.4);
   width: 200px;
   height: 41px;
-
-  transition: box-shadow 250ms linear;
+  font-style: italic;
+  transition: box-shadow 300ms linear, background-color 300ms linear;
 }
 
 .load-more:hover {
   box-shadow: 0.1rem 0.4rem 0.4rem rgb(185, 117, 27);
+  background-color: #fff;
 }

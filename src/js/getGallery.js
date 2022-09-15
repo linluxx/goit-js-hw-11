@@ -12,15 +12,12 @@ export class GalleryApiService {
   }
   async fetchGallery() {
     try {
-      const response = await axios
-        .get(
-          `${URL}?${KEY}&q=${this.searchQuery}&${SEARCH_PARAMS}&page=${this.page}`
-        )
-        .then(res => {
-          this.incrementPage();
-          return res.data;
-        });
-      return response;
+      const response = await axios.get(
+        `${URL}?${KEY}&q=${this.searchQuery}&${SEARCH_PARAMS}&page=${this.page}`
+      );
+
+      this.incrementPage();
+      return response.data;
     } catch (error) {
       console.error(error);
     }

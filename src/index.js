@@ -25,49 +25,47 @@ async function onFormSearch(evt) {
   galleryApiService.resetPage();
   Loading.dots('Loading', { svgColor: 'rgb(185, 117, 27)' });
 
-  await galleryApiService.fetchGallery().then(res => {
-    if (res.hits.length === 0) {
-      Loading.remove(2000);
-      return Report.warning(
-        'Oops!',
-        'Sorry, there are no images matching your search query. Please try again.'
-      );
-    }
-    clearGalleryContainer();
-    Notify.success(`Hooray! We found ${res.totalHits} images.`);
-    window.scrollBy(0, 0);
-    galleryMarkup(res.hits);
-    Loading.remove(2000);
-    if (res.totalHits <= 40) {
-      return Notify.failure(
-        "We're sorry, but you've reached the end of search results."
-      );
-    } else {
-      refs.loadMoreBtn.classList.remove('is-hidden');
-    }
-  });
+  const res = await galleryApiService.fetchGallery();
+  if (res.hits.length === 0) {
+    Loading.remove(700);
+    return Report.warning(
+      'Oops!',
+      'Sorry, there are no images matching your search query. Please try again.'
+    );
+  }
+  clearGalleryContainer();
+  Notify.success(`Hooray! We found ${res.totalHits} images.`);
+  window.scrollBy(0, 0);
+  galleryMarkup(res.hits);
+  Loading.remove(700);
+  if (res.totalHits <= 40) {
+    return Notify.failure(
+      "We're sorry, but you've reached the end of search results."
+    );
+  } else {
+    refs.loadMoreBtn.classList.remove('is-hidden');
+  }
 }
 
 async function onLoadMore() {
   Loading.dots('Loading', { svgColor: 'rgb(185, 117, 27)' });
-  await galleryApiService.fetchGallery().then(res => {
-    galleryMarkup(res.hits);
-    const { height: cardHeight } = document
-      .querySelector('.gallery')
-      .firstElementChild.getBoundingClientRect();
+  const res = await galleryApiService.fetchGallery();
+  galleryMarkup(res.hits);
+  const { height: cardHeight } = document
+    .querySelector('.gallery')
+    .firstElementChild.getBoundingClientRect();
 
-    window.scrollBy({
-      top: cardHeight * 2.5,
-      behavior: 'smooth',
-    });
-    if (res.totalHits - 40 * (galleryApiService.page - 1) <= 0) {
-      refs.loadMoreBtn.classList.add('is-hidden');
-      Notify.failure(
-        "We're sorry, but you've reached the end of search results."
-      );
-    }
+  window.scrollBy({
+    top: cardHeight * 2.5,
+    behavior: 'smooth',
   });
-  Loading.remove(2000);
+  if (res.totalHits - 40 * (galleryApiService.page - 1) <= 0) {
+    refs.loadMoreBtn.classList.add('is-hidden');
+    Notify.failure(
+      "We're sorry, but you've reached the end of search results."
+    );
+  }
+  Loading.remove(700);
 }
 
 function clearGalleryContainer() {
